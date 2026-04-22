@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="../tests/OlapAnalytics.UnitTests/OlapAnalytics.UnitTests.csproj" />
+  <Project Path="OlapAnalytics.API/OlapAnalytics.API.csproj" />
+  <Project Path="OlapAnalytics.Application/OlapAnalytics.Application.csproj" />
+  <Project Path="OlapAnalytics.Domain/OlapAnalytics.Domain.csproj" />
+  <Project Path="OlapAnalytics.Infrastructure/OlapAnalytics.Infrastructure.csproj" />
+</Solution>

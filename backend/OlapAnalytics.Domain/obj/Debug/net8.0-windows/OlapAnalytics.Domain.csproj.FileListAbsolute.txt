@@ -1,0 +1,11 @@
+C:\Users\xpaga\Documents\doankdl\APP\backend\OlapAnalytics.Domain\bin\Debug\net8.0-windows\OlapAnalytics.Domain.deps.json
+C:\Users\xpaga\Documents\doankdl\APP\backend\OlapAnalytics.Domain\bin\Debug\net8.0-windows\OlapAnalytics.Domain.dll
+C:\Users\xpaga\Documents\doankdl\APP\backend\OlapAnalytics.Domain\bin\Debug\net8.0-windows\OlapAnalytics.Domain.pdb
+C:\Users\xpaga\Documents\doankdl\APP\backend\OlapAnalytics.Domain\obj\Debug\net8.0-windows\OlapAnalytics.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\xpaga\Documents\doankdl\APP\backend\OlapAnalytics.Domain\obj\Debug\net8.0-windows\OlapAnalytics.Domain.AssemblyInfoInputs.cache
+C:\Users\xpaga\Documents\doankdl\APP\backend\OlapAnalytics.Domain\obj\Debug\net8.0-windows\OlapAnalytics.Domain.AssemblyInfo.cs
+C:\Users\xpaga\Documents\doankdl\APP\backend\OlapAnalytics.Domain\obj\Debug\net8.0-windows\OlapAnalytics.Domain.csproj.CoreCompileInputs.cache
+C:\Users\xpaga\Documents\doankdl\APP\backend\OlapAnalytics.Domain\obj\Debug\net8.0-windows\OlapAnalytics.Domain.dll
+C:\Users\xpaga\Documents\doankdl\APP\backend\OlapAnalytics.Domain\obj\Debug\net8.0-windows\refint\OlapAnalytics.Domain.dll
+C:\Users\xpaga\Documents\doankdl\APP\backend\OlapAnalytics.Domain\obj\Debug\net8.0-windows\OlapAnalytics.Domain.pdb
+C:\Users\xpaga\Documents\doankdl\APP\backend\OlapAnalytics.Domain\obj\Debug\net8.0-windows\ref\OlapAnalytics.Domain.dll
