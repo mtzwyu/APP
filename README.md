@@ -12,9 +12,6 @@
 
 **OlapAnalytics** là nền tảng Business Intelligence (BI) thế hệ mới, kết hợp sức mạnh của **Generative AI (Gemini)** với kiến trúc **OLAP (SSAS)** truyền thống. Hệ thống cho phép biến dữ liệu thô từ file Excel/CSV thành một kho dữ liệu (Data Warehouse) hoàn chỉnh và khối lập phương đa chiều (SSAS Cube) chỉ trong vài giây thông qua quy trình tự động hóa hoàn toàn.
 
-<div align="center">
-  <img src="C:\Users\xpaga\.gemini\antigravity\brain\e952bee2-3a7d-44f0-95b0-56eda628c031\olap_analytics_dashboard_mockup_1776954216289.png" alt="Dashboard Preview" width="100%" />
-</div>
 
 ---
 
