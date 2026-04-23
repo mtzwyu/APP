@@ -1,3 +1,5 @@
+<div align="center">
+
 # 🌌 OlapAnalytics: AI-Powered Multi-Dimensional Intelligence
 
 [![Build Status](https://img.shields.io/badge/Build-Success-brightgreen.svg)]()
@@ -6,9 +8,13 @@
 [![AI](https://img.shields.io/badge/Google-Gemini_Pro-8b5cf6.svg)]()
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)]()
 
+</div>
+
 **OlapAnalytics** là nền tảng Business Intelligence (BI) thế hệ mới, kết hợp sức mạnh của **Generative AI (Gemini)** với kiến trúc **OLAP (SSAS)** truyền thống. Hệ thống cho phép biến dữ liệu thô từ file Excel/CSV thành một kho dữ liệu (Data Warehouse) hoàn chỉnh và khối lập phương đa chiều (SSAS Cube) chỉ trong vài giây thông qua quy trình tự động hóa hoàn toàn.
 
-![Dashboard Preview](C:\Users\xpaga\.gemini\antigravity\brain\e952bee2-3a7d-44f0-95b0-56eda628c031\olap_analytics_dashboard_mockup_1776954216289.png)
+<div align="center">
+  <img src="C:\Users\xpaga\.gemini\antigravity\brain\e952bee2-3a7d-44f0-95b0-56eda628c031\olap_analytics_dashboard_mockup_1776954216289.png" alt="Dashboard Preview" width="100%" />
+</div>
 
 ---
 
@@ -66,7 +72,9 @@ Hệ thống sử dụng mô hình **Gemini 1.5 Pro** tích hợp sâu vào quy 
 - Dựa trên Schema do AI thiết kế, hệ thống tự động sinh cấu trúc Cube (Measures, Dimensions, Hierarchies).
 - Thực hiện **Process Cube** để người dùng có thể truy vấn ngay bằng ngôn ngữ MDX trên Dashboard.
 
-![AI Flow](C:\Users\xpaga\.gemini\antigravity\brain\e952bee2-3a7d-44f0-95b0-56eda628c031\olap_analytics_ai_flow_visual_1776954400555.png)
+<div align="center">
+  <img src="C:\Users\xpaga\.gemini\antigravity\brain\e952bee2-3a7d-44f0-95b0-56eda628c031\olap_analytics_ai_flow_visual_1776954400555.png" alt="AI Flow" width="90%" />
+</div>
 
 ---
 
