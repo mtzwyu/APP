@@ -15,7 +15,7 @@
 ## 📖 Mục lục (Table of Contents)
 - [✨ Giới thiệu](#-giới-thiệu)
 - [🚀 Tính năng chính](#-tính-năng-chính)
-- [🤖 Quy trình AI (AI Pipeline)](#-quy-trình-ai-ai-pipeline)
+- [🤖 Quy trình AI Thông minh (Advanced AI Pipeline)](#-quy-trình-ai-thông-minh-advanced-ai-pipeline)
 - [🏗️ Kiến trúc hệ thống](#-kiến-trúc-hệ-thống)
 - [🛠️ Hướng dẫn Cài đặt](#-hướng-dẫn-cài-đặt)
 - [📖 Hướng dẫn Sử dụng](#-hướng-dẫn-sử-dụng)
@@ -40,11 +40,31 @@ Dự án giải quyết vấn đề phức tạp trong việc xây dựng hệ t
 
 ---
 
-## 🤖 Quy trình AI (AI Pipeline)
-Hệ thống sử dụng mô hình **Gemini 1.5 Pro** để thực hiện các bước:
-1. **Semantic Analysis**: Hiểu ý nghĩa của từng cột dữ liệu (ví dụ: nhận biết "Cost" là Measure, "City" là Dimension).
-2. **Schema Engineering**: Thiết kế cấu trúc Star Schema tối ưu.
-3. **Script Generation**: Tự động viết mã SQL (DDL/DML) và XMLA để xây dựng hệ thống Warehouse/Cube.
+## 🤖 Quy trình AI Thông minh (Advanced AI Pipeline)
+Hệ thống sử dụng mô hình **Gemini 1.5 Pro** tích hợp sâu vào quy trình ETL và OLAP Provisioning thông qua 5 giai đoạn tự động hóa:
+
+### 1. Phân tích Ngữ nghĩa (Semantic Sampling)
+- Hệ thống trích xuất 200 dòng dữ liệu đầu tiên để AI hiểu cấu trúc và kiểu dữ liệu.
+- AI xác định vai trò của từng cột: `Measure` (chỉ tiêu đo lường), `Dimension` (chiều phân tích), hoặc `Key` (khóa liên kết).
+
+### 2. Kỹ thuật Schema (Star Schema Engineering)
+- AI tự động thiết kế mô hình **Star Schema** tối ưu:
+  - Gom các thuộc tính văn bản vào các bảng **Dimension**.
+  - Đưa các chỉ tiêu số và khóa ngoại vào bảng **Fact**.
+  - Tự động tạo bảng **Dim_Date** để xử lý các thuộc tính thời gian.
+
+### 3. Tự động hóa T-SQL & DDL
+- Gemini sinh mã SQL hoàn chỉnh bao gồm:
+  - Tạo Database và các bảng với khóa chính (PK) và khóa ngoại (FK) chuẩn xác.
+  - Xử lý các kiểu dữ liệu (Data types) phù hợp nhất với SQL Server.
+
+### 4. Pipeline Nạp dữ liệu (Smart Bulk Insert)
+- Hệ thống thực hiện ánh xạ (Mapping) dữ liệu từ file thô vào các bảng SQL đã tạo.
+- Thực hiện **Deduplication** (loại bỏ trùng lặp) cho các bảng Dimension để đảm bảo tính toàn vẹn dữ liệu.
+
+### 5. Triển khai SSAS Cube (XMLA Deployment)
+- Dựa trên Schema do AI thiết kế, hệ thống tự động sinh cấu trúc Cube (Measures, Dimensions, Hierarchies).
+- Thực hiện **Process Cube** để người dùng có thể truy vấn ngay bằng ngôn ngữ MDX trên Dashboard.
 
 ![AI Flow](C:\Users\xpaga\.gemini\antigravity\brain\e952bee2-3a7d-44f0-95b0-56eda628c031\olap_analytics_ai_flow_visual_1776954400555.png)
 
