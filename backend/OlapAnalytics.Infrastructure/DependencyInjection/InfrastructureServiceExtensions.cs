@@ -43,8 +43,9 @@ public static class InfrastructureServiceExtensions
         {
             var inner = sp.GetRequiredService<SsasMdxExecutor>();
             var cache = sp.GetRequiredService<IMemoryCache>();
+            var provider = sp.GetRequiredService<ITenantConnectionProvider>();
             var logger = sp.GetRequiredService<ILogger<CachedMdxExecutor>>();
-            return new CachedMdxExecutor(inner, cache, logger);
+            return new CachedMdxExecutor(inner, cache, provider, logger);
         });
 
         // Register SQL Server service

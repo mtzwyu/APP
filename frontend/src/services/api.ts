@@ -66,6 +66,30 @@ export async function updateSettings(body: any) {
   return res.data
 }
 
+/** Discover user databases available on the SQL Server (uses temp conn string) */
+export async function discoverSqlDatabases(connStr: string): Promise<string[]> {
+  const res = await apiClient.post('/api/auth/sql-databases', { connectionString: connStr })
+  return res.data?.databases ?? []
+}
+
+/** Discover catalogs available on an SSAS server (uses temp conn string) */
+export async function discoverSsasCatalogs(connStr: string): Promise<string[]> {
+  const res = await apiClient.post('/api/auth/ssas-catalogs', { connectionString: connStr })
+  return res.data?.catalogs ?? []
+}
+
+/** Discover cubes inside an SSAS catalog */
+export async function discoverSsasCubes(connStr: string): Promise<string[]> {
+  const res = await apiClient.post('/api/auth/ssas-cubes', { connectionString: connStr })
+  return res.data?.cubes ?? []
+}
+
+/** Discover tables inside a SQL database */
+export async function discoverSqlTables(connStr: string): Promise<string[]> {
+  const res = await apiClient.post('/api/auth/sql-tables', { connectionString: connStr })
+  return res.data?.tables ?? []
+}
+
 export async function getSettings(): Promise<{
   sqlConnectionString: string
   ssasConnectionString: string

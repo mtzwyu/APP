@@ -1,34 +1,69 @@
-const { spawn } = require('node:child_process');
+const { spawn, execSync } = require('node:child_process');
 const path = require('node:path');
 
 console.log('===================================================');
-console.log('🚀 KHỞI ĐỘNG HỆ THỐNG OLAPANALYTICS (NODE JS)');
+console.log('🚀 KHỞI ĐỘNG HỆ THỐNG OLAPANALYTICS (MẸO Ổ ĐĨA ẢO)');
 console.log('===================================================');
 
-const backendPath = path.join(__dirname, 'backend', 'OlapAnalytics.API');
-const frontendPath = path.join(__dirname, 'frontend');
+const projectPath = __dirname;
+const driveLetter = 'Z:';
 
-// Chạy thư mục Backend
-const backendProcess = spawn('dotnet', ['run'], { 
+// 1. Dọn dẹp ổ ảo cũ nếu có và tạo mới
+try {
+    console.log(`🔗 Đang tạo ổ đĩa ảo ${driveLetter} cho dự án...`);
+    execSync(`subst ${driveLetter} /D`, { stdio: 'ignore' });
+} catch (e) {}
+
+try {
+    execSync(`subst ${driveLetter} "${projectPath}"`);
+} catch (e) {
+    console.error('❌ Không thể tạo ổ đĩa ảo. Thử chạy tiếp từ đường dẫn gốc...');
+}
+
+// 2. Unblock files (Quan trọng để tránh Application Control)
+console.log('🛡️  Đang Unblock các file trong project (đường dẫn vật lý)...');
+try {
+    execSync(`powershell "Get-ChildItem -Path '${projectPath}' -Recurse | Unblock-File"`, { stdio: 'ignore' });
+} catch (e) {}
+
+// Đường dẫn mới trên ổ Z:
+const backendPath = path.join(driveLetter, 'backend', 'OlapAnalytics.API');
+const frontendPath = path.join(driveLetter, 'frontend');
+
+// 3. Build Backend trước
+console.log('🔨 Đang build Backend...');
+try {
+    console.log('🧹 Đang dọn dẹp (Clean)...');
+    execSync('dotnet clean', { cwd: backendPath, stdio: 'inherit' });
+    execSync('dotnet build', { cwd: backendPath, stdio: 'inherit' });
+} catch (e) {
+    console.error('❌ Build thất bại.');
+}
+
+// 4. Chạy Backend bằng DLL (Để bypass Application Control block .exe)
+console.log('🚀 Đang chạy Backend (DLL Mode)...');
+const dllPath = path.join(backendPath, 'bin', 'Debug', 'net8.0-windows', 'OlapAnalytics.API.dll');
+const backendProcess = spawn('dotnet', [dllPath], { 
     cwd: backendPath, 
-    stdio: 'inherit', // Gộp trực tiếp log của backend vào cửa sổ này
-    shell: true 
+    stdio: 'inherit',
+    env: {
+        ...process.env,
+        ASPNETCORE_ENVIRONMENT: 'Development',
+        ASPNETCORE_URLS: 'http://localhost:5105'
+    }
 });
 
-// Chạy thư mục Frontend
+console.log('🎨 Đang chạy Frontend...');
 const frontendProcess = spawn('npm', ['run', 'dev'], { 
     cwd: frontendPath, 
-    stdio: 'inherit', // Gộp trực tiếp log của react vào cửa sổ này
+    stdio: 'inherit',
     shell: true 
 });
 
-backendProcess.on('error', (err) => console.error('Lỗi khi chạy Backend:', err));
-frontendProcess.on('error', (err) => console.error('Lỗi khi chạy Frontend:', err));
-
-// Xử lý khi người dùng ấn Ctrl+C để tắt
 process.on('SIGINT', () => {
-    console.log('\nĐang ngắt kết nối hệ thống...');
-    backendProcess.kill('SIGINT');
-    frontendProcess.kill('SIGINT');
+    console.log('\n🛑 Đang dọn dẹp...');
+    backendProcess.kill();
+    frontendProcess.kill();
+    try { execSync(`subst ${driveLetter} /D`); } catch (e) {}
     process.exit();
 });

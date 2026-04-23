@@ -36,6 +36,9 @@ public class KpiService
         var previousYear = request.PreviousYear ?? currentYear - 1;
 
         var cubeName = await _executor.GetActiveCubeNameAsync(cancellationToken);
+        if (string.IsNullOrEmpty(cubeName))
+            throw new InvalidOperationException("Hệ thống chưa tìm thấy Cube dữ liệu. Vui lòng thực hiện 'Phân tích' dữ liệu trước.");
+
         var timeLevel = request.YearColumn;
         
         var filters = (request.Slicers ?? new()).Select(s => new Domain.ValueObjects.DimensionFilter
@@ -59,7 +62,7 @@ public class KpiService
         previousYearMdx = await _builder.ApplyFiltersAsync(previousYearMdx, filters);
 
         // 3. Execute YoY query (with calculated member)
-        var yoyMdx = await _builder.BuildYoYQueryAsync(cubeName, request.Measure, currentYear, request.YearColumn);
+        var yoyMdx = await _builder.BuildYoYQueryAsync(cubeName!, request.Measure, currentYear, request.YearColumn);
         yoyMdx = await _builder.ApplyFiltersAsync(yoyMdx, filters);
 
         decimal currentValue = 0, previousValue = 0, yoyGrowth = 0, momGrowth = 0;
@@ -79,7 +82,7 @@ public class KpiService
 
             if (request.Month.HasValue)
             {
-                var momMdx = await _builder.BuildMoMQueryAsync(cubeName, request.Measure, currentYear, request.YearColumn);
+                var momMdx = await _builder.BuildMoMQueryAsync(cubeName!, request.Measure, currentYear, request.YearColumn);
                 momMdx = await _builder.ApplyFiltersAsync(momMdx, filters);
                 
                 var momResult = await _executor.ExecuteQueryAsync(momMdx, cancellationToken);

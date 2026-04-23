@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj",
+      "projectUniqueName": "Z:\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj",
       "projectName": "OlapAnalytics.Domain",
-      "projectPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj",
+      "projectPath": "Z:\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj",
       "packagesPath": "C:\\Users\\xpaga\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\obj\\",
+      "outputPath": "Z:\\backend\\OlapAnalytics.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\xpaga\\AppData\\Roaming\\NuGet\\NuGet.Config",

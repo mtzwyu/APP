@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.API\\OlapAnalytics.API.csproj": {}
+    "Z:\\backend\\OlapAnalytics.API\\OlapAnalytics.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.API\\OlapAnalytics.API.csproj": {
+    "Z:\\backend\\OlapAnalytics.API\\OlapAnalytics.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.API\\OlapAnalytics.API.csproj",
+        "projectUniqueName": "Z:\\backend\\OlapAnalytics.API\\OlapAnalytics.API.csproj",
         "projectName": "OlapAnalytics.API",
-        "projectPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.API\\OlapAnalytics.API.csproj",
+        "projectPath": "Z:\\backend\\OlapAnalytics.API\\OlapAnalytics.API.csproj",
         "packagesPath": "C:\\Users\\xpaga\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.API\\obj\\",
+        "outputPath": "Z:\\backend\\OlapAnalytics.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\xpaga\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -29,14 +29,14 @@
             "framework": "net8.0-windows7.0",
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj": {
-                "projectPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj"
+              "Z:\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj": {
+                "projectPath": "Z:\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj"
               },
-              "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj": {
-                "projectPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj"
+              "Z:\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj": {
+                "projectPath": "Z:\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj"
               },
-              "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Infrastructure\\OlapAnalytics.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Infrastructure\\OlapAnalytics.Infrastructure.csproj"
+              "Z:\\backend\\OlapAnalytics.Infrastructure\\OlapAnalytics.Infrastructure.csproj": {
+                "projectPath": "Z:\\backend\\OlapAnalytics.Infrastructure\\OlapAnalytics.Infrastructure.csproj"
               }
             }
           }
@@ -116,14 +116,14 @@
         }
       }
     },
-    "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj": {
+    "Z:\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj",
+        "projectUniqueName": "Z:\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj",
         "projectName": "OlapAnalytics.Application",
-        "projectPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj",
+        "projectPath": "Z:\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj",
         "packagesPath": "C:\\Users\\xpaga\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Application\\obj\\",
+        "outputPath": "Z:\\backend\\OlapAnalytics.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\xpaga\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -141,8 +141,8 @@
             "framework": "net8.0-windows7.0",
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj": {
-                "projectPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj"
+              "Z:\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj": {
+                "projectPath": "Z:\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj"
               }
             }
           }
@@ -223,14 +223,14 @@
         }
       }
     },
-    "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj": {
+    "Z:\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj",
+        "projectUniqueName": "Z:\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj",
         "projectName": "OlapAnalytics.Domain",
-        "projectPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj",
+        "projectPath": "Z:\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj",
         "packagesPath": "C:\\Users\\xpaga\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\obj\\",
+        "outputPath": "Z:\\backend\\OlapAnalytics.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\xpaga\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -300,14 +300,14 @@
         }
       }
     },
-    "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Infrastructure\\OlapAnalytics.Infrastructure.csproj": {
+    "Z:\\backend\\OlapAnalytics.Infrastructure\\OlapAnalytics.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Infrastructure\\OlapAnalytics.Infrastructure.csproj",
+        "projectUniqueName": "Z:\\backend\\OlapAnalytics.Infrastructure\\OlapAnalytics.Infrastructure.csproj",
         "projectName": "OlapAnalytics.Infrastructure",
-        "projectPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Infrastructure\\OlapAnalytics.Infrastructure.csproj",
+        "projectPath": "Z:\\backend\\OlapAnalytics.Infrastructure\\OlapAnalytics.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\xpaga\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Infrastructure\\obj\\",
+        "outputPath": "Z:\\backend\\OlapAnalytics.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\xpaga\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -325,11 +325,11 @@
             "framework": "net8.0-windows7.0",
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj": {
-                "projectPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj"
+              "Z:\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj": {
+                "projectPath": "Z:\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj"
               },
-              "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj": {
-                "projectPath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj"
+              "Z:\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj": {
+                "projectPath": "Z:\\backend\\OlapAnalytics.Domain\\OlapAnalytics.Domain.csproj"
               }
             }
           }

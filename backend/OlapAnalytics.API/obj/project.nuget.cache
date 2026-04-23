@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "OqL3Sr4+WTY=",
+  "dgSpecHash": "BJnIR8LOxso=",
   "success": true,
-  "projectFilePath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.API\\OlapAnalytics.API.csproj",
+  "projectFilePath": "Z:\\backend\\OlapAnalytics.API\\OlapAnalytics.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\xpaga\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\xpaga\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

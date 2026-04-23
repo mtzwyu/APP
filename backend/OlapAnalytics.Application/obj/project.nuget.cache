@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Jxx6aaREdCA=",
+  "dgSpecHash": "41+YOB1NlCM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\xpaga\\Documents\\doankdl\\APP\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj",
+  "projectFilePath": "Z:\\backend\\OlapAnalytics.Application\\OlapAnalytics.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\xpaga\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\xpaga\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
@@ -59,9 +59,9 @@
     "C:\\Users\\xpaga\\.nuget\\packages\\system.text.encodings.web\\4.7.2\\system.text.encodings.web.4.7.2.nupkg.sha512",
     "C:\\Users\\xpaga\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
     "C:\\Users\\xpaga\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "C:\\Users\\xpaga\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.25\\microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512",
     "C:\\Users\\xpaga\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.25\\microsoft.netcore.app.ref.8.0.25.nupkg.sha512",
-    "C:\\Users\\xpaga\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.25\\microsoft.windowsdesktop.app.ref.8.0.25.nupkg.sha512"
+    "C:\\Users\\xpaga\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.25\\microsoft.windowsdesktop.app.ref.8.0.25.nupkg.sha512",
+    "C:\\Users\\xpaga\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.25\\microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512"
   ],
   "logs": []
 }

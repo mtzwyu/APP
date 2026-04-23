@@ -20,5 +20,5 @@ public interface IMdxExecutor
     Task<bool> TestConnectionAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Finds the first available user cube name dynamically.</summary>
-    Task<string> GetActiveCubeNameAsync(CancellationToken cancellationToken = default);
+    Task<string?> GetActiveCubeNameAsync(CancellationToken cancellationToken = default);
 }

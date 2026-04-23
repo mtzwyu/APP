@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { updateSettings, getSettings } from '../services/api'
+import { useState, useEffect, useRef } from 'react'
+import { updateSettings, getSettings, discoverSqlDatabases, discoverSsasCatalogs, discoverSqlTables, discoverSsasCubes } from '../services/api'
 
 // ── Icons ──────────────────────────────────────────────────────────────────────
 
@@ -127,6 +127,31 @@ export default function SettingsPage({ onSetupDone }: SettingsPageProps) {
   const [sqlSaved,  setSqlSaved]  = useState(false)
   const [ssasSaved, setSsasSaved] = useState(false)
 
+  // Discover
+  const [sqlDbs,       setSqlDbs]       = useState<string[]>([])
+  const [sqlTables,    setSqlTables]    = useState<string[]>([])
+  const [ssasCatalogs, setSsasCatalogs] = useState<string[]>([])
+  const [ssasCubes,    setSsasCubes]    = useState<string[]>([])
+  
+  const [discoveringSql,  setDiscoveringSql]  = useState(false)
+  const [discoveringSsas, setDiscoveringSsas] = useState(false)
+  const [showSqlDbs,       setShowSqlDbs]       = useState(false)
+  const [showSsasCatalogs, setShowSsasCatalogs] = useState(false)
+  const sqlDropRef  = useRef<HTMLDivElement>(null)
+  const ssasDropRef = useRef<HTMLDivElement>(null)
+  const sqlDebounceRef  = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const ssasDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (sqlDropRef.current && !sqlDropRef.current.contains(e.target as Node)) setShowSqlDbs(false)
+      if (ssasDropRef.current && !ssasDropRef.current.contains(e.target as Node)) setShowSsasCatalogs(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
   // ── Parse connection string helpers ─────────────────────────────────────────
   const parseKV = (conn: string) => {
     const map: Record<string, string> = {}
@@ -200,6 +225,78 @@ export default function SettingsPage({ onSetupDone }: SettingsPageProps) {
     } catch (err: any) {
       setMsgSsas('✗ ' + (err?.response?.data?.message ?? err.message))
     } finally { setLoadingSsas(false) }
+  }
+
+  // ── Auto-discover helpers (debounced 800ms) ─────────────────────────────────
+  const buildSqlConnStr = (server = sqlServer) => {
+    const parts = [`Server=${server}`, 'TrustServerCertificate=True']
+    if (sqlUser) parts.push(`User Id=${sqlUser}`)
+    if (sqlPass) parts.push(`Password=${sqlPass}`)
+    return parts.join(';') + ';'
+  }
+
+  const buildSsasConnStr = (server = ssasServer) => {
+    const parts = [`Data Source=${server}`]
+    if (ssasUser) parts.push(`User Id=${ssasUser}`)
+    if (ssasPass) parts.push(`Password=${ssasPass}`)
+    return parts.join(';') + ';'
+  }
+
+  // ── Auto-discovery logic (triggered on Server/User/Pass changes) ──────────
+  useEffect(() => {
+    if (!sqlServer.trim()) { setSqlDbs([]); return }
+    if (sqlDebounceRef.current) clearTimeout(sqlDebounceRef.current)
+    sqlDebounceRef.current = setTimeout(async () => {
+      try {
+        setDiscoveringSql(true)
+        const dbs = await discoverSqlDatabases(buildSqlConnStr())
+        setSqlDbs(dbs)
+        if (dbs.length > 0) setShowSqlDbs(true)
+      } catch { /* silent */ }
+      finally { setDiscoveringSql(false) }
+    }, 800)
+    return () => { if (sqlDebounceRef.current) clearTimeout(sqlDebounceRef.current) }
+  }, [sqlServer, sqlUser, sqlPass])
+
+  useEffect(() => {
+    if (!ssasServer.trim()) { setSsasCatalogs([]); return }
+    if (ssasDebounceRef.current) clearTimeout(ssasDebounceRef.current)
+    ssasDebounceRef.current = setTimeout(async () => {
+      try {
+        setDiscoveringSsas(true)
+        const cats = await discoverSsasCatalogs(buildSsasConnStr())
+        setSsasCatalogs(cats)
+        if (cats.length > 0) setShowSsasCatalogs(true)
+      } catch { /* silent */ }
+      finally { setDiscoveringSsas(false) }
+    }, 800)
+    return () => { if (ssasDebounceRef.current) clearTimeout(ssasDebounceRef.current) }
+  }, [ssasServer, ssasUser, ssasPass])
+
+  // Discover Tables when DB changes
+  useEffect(() => {
+    if (!sqlDb || !sqlServer) { setSqlTables([]); return }
+    discoverSqlTables(buildSqlConnStr() + `Initial Catalog=${sqlDb};`)
+      .then(setSqlTables)
+      .catch(() => setSqlTables([]))
+  }, [sqlDb, sqlServer, sqlUser, sqlPass])
+
+  // Discover Cubes when Catalog changes
+  useEffect(() => {
+    if (!ssasCatalog || !ssasServer) { setSsasCubes([]); return }
+    discoverSsasCubes(buildSsasConnStr() + `Initial Catalog=${ssasCatalog};`)
+      .then(setSsasCubes)
+      .catch(() => setSsasCubes([]))
+  }, [ssasCatalog, ssasServer, ssasUser, ssasPass])
+
+  const onSqlServerChange = (val: string) => {
+    setSqlServer(val)
+    setSqlDbs([]); setShowSqlDbs(false); setSqlTables([])
+  }
+
+  const onSsasServerChange = (val: string) => {
+    setSsasServer(val)
+    setSsasCatalogs([]); setShowSsasCatalogs(false); setSsasCubes([])
   }
 
   const handleSaveGemini = async () => {
@@ -280,13 +377,62 @@ export default function SettingsPage({ onSetupDone }: SettingsPageProps) {
           loading={loadingSql} disabled={!sqlServer} msg={msgSql} onSave={handleSaveSql}
         />
         <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 10 }}>
-          <div className="input-group">
-            <label>Tên Server</label>
-            <input className="input" value={sqlServer} onChange={e => setSqlServer(e.target.value)} placeholder="localhost\SQLEXPRESS" />
+          {/* Server — auto-discover on typing */}
+          <div className="input-group" style={{ position: 'relative' }} ref={sqlDropRef}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              Tên Server
+              {discoveringSql && <span className="spinner" style={{ width: 9, height: 9 }} />}
+              {!discoveringSql && sqlDbs.length > 0 && (
+                <span style={{ fontSize: 10, color: 'var(--accent)', fontWeight: 600 }}>
+                  {sqlDbs.length} DB
+                </span>
+              )}
+            </label>
+            <input
+              className="input"
+              value={sqlServer}
+              onChange={e => onSqlServerChange(e.target.value)}
+              placeholder="localhost\SQLEXPRESS"
+            />
+            {showSqlDbs && sqlDbs.length > 0 && (
+              <div style={{
+                position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 50,
+                background: 'var(--bg-card)', border: '1px solid var(--accent)',
+                borderRadius: 8, boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+                maxHeight: 180, overflowY: 'auto', marginTop: 4,
+              }}>
+                <div style={{ padding: '6px 10px 4px', fontSize: 10, fontWeight: 700, color: 'var(--accent)', borderBottom: '1px solid var(--border)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                  {sqlDbs.length} database tìm thấy
+                </div>
+                {sqlDbs.map(db => (
+                  <div
+                    key={db}
+                    onClick={() => { setSqlDb(db); setMode('existing'); setShowSqlDbs(false) }}
+                    style={{
+                      padding: '8px 12px', fontSize: 12, cursor: 'pointer',
+                      color: 'var(--text-primary)', transition: 'background 0.15s',
+                      display: 'flex', alignItems: 'center', gap: 8,
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(59,130,246,0.1)')}
+                    onMouseLeave={e => (e.currentTarget.style.background = '')}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                    {db}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           {mode === 'existing' && (
             <div className="input-group">
-              <label>Database</label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                Database
+                {sqlTables.length > 0 && (
+                  <span style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>
+                    ({sqlTables.length} bảng)
+                  </span>
+                )}
+              </label>
               <input className="input" value={sqlDb} onChange={e => setSqlDb(e.target.value)} placeholder="DW_Travel" />
             </div>
           )}
@@ -308,13 +454,62 @@ export default function SettingsPage({ onSetupDone }: SettingsPageProps) {
           loading={loadingSsas} disabled={!ssasServer} msg={msgSsas} onSave={handleSaveSsas}
         />
         <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 10 }}>
-          <div className="input-group">
-            <label>Tên Server</label>
-            <input className="input" value={ssasServer} onChange={e => setSsasServer(e.target.value)} placeholder="localhost\MSSQLSERVER" />
+          {/* SSAS Server — auto-discover on typing */}
+          <div className="input-group" style={{ position: 'relative' }} ref={ssasDropRef}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              Tên Server
+              {discoveringSsas && <span className="spinner" style={{ width: 9, height: 9 }} />}
+              {!discoveringSsas && ssasCatalogs.length > 0 && (
+                <span style={{ fontSize: 10, color: 'var(--accent-3)', fontWeight: 600 }}>
+                  {ssasCatalogs.length} Catalog
+                </span>
+              )}
+            </label>
+            <input
+              className="input"
+              value={ssasServer}
+              onChange={e => onSsasServerChange(e.target.value)}
+              placeholder="localhost\MSSQLSERVER"
+            />
+            {showSsasCatalogs && ssasCatalogs.length > 0 && (
+              <div style={{
+                position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 50,
+                background: 'var(--bg-card)', border: '1px solid var(--accent-3)',
+                borderRadius: 8, boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+                maxHeight: 180, overflowY: 'auto', marginTop: 4,
+              }}>
+                <div style={{ padding: '6px 10px 4px', fontSize: 10, fontWeight: 700, color: 'var(--accent-3)', borderBottom: '1px solid var(--border)', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                  {ssasCatalogs.length} catalog tìm thấy
+                </div>
+                {ssasCatalogs.map(cat => (
+                  <div
+                    key={cat}
+                    onClick={() => { setSsasCatalog(cat); setMode('existing'); setShowSsasCatalogs(false) }}
+                    style={{
+                      padding: '8px 12px', fontSize: 12, cursor: 'pointer',
+                      color: 'var(--text-primary)', transition: 'background 0.15s',
+                      display: 'flex', alignItems: 'center', gap: 8,
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(16,185,129,0.1)')}
+                    onMouseLeave={e => (e.currentTarget.style.background = '')}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                    {cat}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           {mode === 'existing' && (
             <div className="input-group">
-              <label>Catalog</label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                Catalog
+                {ssasCubes.length > 0 && (
+                  <span style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>
+                    ({ssasCubes.length} Cube)
+                  </span>
+                )}
+              </label>
               <input className="input" value={ssasCatalog} onChange={e => setSsasCatalog(e.target.value)} placeholder="Travel_Cube" />
             </div>
           )}

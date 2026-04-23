@@ -34,6 +34,8 @@ public class TrendService
             request.Measure, request.Granularity);
 
         var cubeName = await _executor.GetActiveCubeNameAsync(cancellationToken);
+        if (string.IsNullOrEmpty(cubeName))
+            throw new InvalidOperationException("Hệ thống chưa tìm thấy Cube dữ liệu. Vui lòng thực hiện 'Phân tích' dữ liệu trước.");
         
         IEnumerable<Domain.ValueObjects.DimensionFilter>? extraFilters = null;
         if (request.Slicers != null && request.Slicers.Any())
@@ -45,7 +47,7 @@ public class TrendService
             });
         }
 
-        var mdx = await _builder.BuildTrendQueryAsync(cubeName, request.Measure, request.YearColumn, request.Granularity, request.Year, extraFilters);
+        var mdx = await _builder.BuildTrendQueryAsync(cubeName!, request.Measure, request.YearColumn, request.Granularity, request.Year, extraFilters);
         var result = await _executor.ExecuteQueryAsync(mdx, cancellationToken);
 
         var dataPoints = new List<TrendDataPointDto>();
@@ -102,7 +104,10 @@ public class TrendService
 
         var dateRange = year.HasValue ? new Domain.ValueObjects.DateRange { YearColumn = yearColumn, Year = year } : null;
         var cubeName = await _executor.GetActiveCubeNameAsync(cancellationToken);
-        var mdx = await _builder.BuildTopNQueryAsync(cubeName, measure, dimension, topN, null, dateRange);
+        if (string.IsNullOrEmpty(cubeName))
+            throw new InvalidOperationException("Hệ thống chưa tìm thấy Cube dữ liệu. Vui lòng thực hiện 'Phân tích' dữ liệu trước.");
+
+        var mdx = await _builder.BuildTopNQueryAsync(cubeName!, measure, dimension, topN, null, dateRange);
 
         // Apply extra dimension slicers (month, day, weekday attributes from Dim Time)
         if (slicers != null && slicers.Count > 0)

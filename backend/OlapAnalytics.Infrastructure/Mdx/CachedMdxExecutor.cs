@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using OlapAnalytics.Domain.Entities;
+using OlapAnalytics.Application.Interfaces;
 using OlapAnalytics.Domain.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
@@ -16,24 +17,37 @@ public class CachedMdxExecutor : IMdxExecutor
 {
     private readonly IMdxExecutor _inner;
     private readonly IMemoryCache _cache;
+    private readonly ITenantConnectionProvider _connectionProvider;
     private readonly ILogger<CachedMdxExecutor> _logger;
     private readonly TimeSpan _cacheDuration;
+    private string? _connHash;
 
     public CachedMdxExecutor(
         IMdxExecutor inner,
         IMemoryCache cache,
+        ITenantConnectionProvider connectionProvider,
         ILogger<CachedMdxExecutor> logger,
         TimeSpan? cacheDuration = null)
     {
         _inner = inner;
         _cache = cache;
+        _connectionProvider = connectionProvider;
         _logger = logger;
         _cacheDuration = cacheDuration ?? TimeSpan.FromMinutes(5);
     }
 
+    private async Task<string> GetConnectionPrefixAsync()
+    {
+        if (_connHash != null) return _connHash;
+        var connStr = await _connectionProvider.GetSsasConnectionStringAsync();
+        _connHash = $"ssas:{ComputeHash(connStr)}";
+        return _connHash;
+    }
+
     public async Task<CubeResult> ExecuteQueryAsync(string mdxQuery, CancellationToken cancellationToken = default)
     {
-        var cacheKey = $"mdx:{ComputeHash(mdxQuery)}";
+        var prefix = await GetConnectionPrefixAsync();
+        var cacheKey = $"{prefix}:mdx:{ComputeHash(mdxQuery)}";
 
         if (_cache.TryGetValue(cacheKey, out CubeResult? cached) && cached != null)
         {
@@ -57,37 +71,40 @@ public class CachedMdxExecutor : IMdxExecutor
         return result;
     }
 
-    public Task<IEnumerable<Dimension>> GetDimensionsAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Dimension>> GetDimensionsAsync(CancellationToken cancellationToken = default)
     {
-        const string key = "dimensions:all";
-        return _cache.GetOrCreateAsync(key, async entry =>
+        var prefix = await GetConnectionPrefixAsync();
+        var key = $"{prefix}:dimensions:all";
+        return (await _cache.GetOrCreateAsync(key, async entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
             return await _inner.GetDimensionsAsync(cancellationToken) ?? Enumerable.Empty<Dimension>();
-        })!;
+        }))!;
     }
 
-    public Task<IEnumerable<Measure>> GetMeasuresAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Measure>> GetMeasuresAsync(CancellationToken cancellationToken = default)
     {
-        const string key = "measures:all";
-        return _cache.GetOrCreateAsync(key, async entry =>
+        var prefix = await GetConnectionPrefixAsync();
+        var key = $"{prefix}:measures:all";
+        return (await _cache.GetOrCreateAsync(key, async entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
             return await _inner.GetMeasuresAsync(cancellationToken) ?? Enumerable.Empty<Measure>();
-        })!;
+        }))!;
     }
 
     public Task<bool> TestConnectionAsync(CancellationToken cancellationToken = default)
         => _inner.TestConnectionAsync(cancellationToken);
 
-    public Task<string> GetActiveCubeNameAsync(CancellationToken cancellationToken = default)
+    public async Task<string?> GetActiveCubeNameAsync(CancellationToken cancellationToken = default)
     {
-        const string key = "cube:active";
-        return _cache.GetOrCreateAsync(key, async entry =>
+        var prefix = await GetConnectionPrefixAsync();
+        var key = $"{prefix}:cube:active";
+        return (await _cache.GetOrCreateAsync(key, async entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
             return await _inner.GetActiveCubeNameAsync(cancellationToken);
-        })!;
+        }))!;
     }
 
     private static string ComputeHash(string input)
