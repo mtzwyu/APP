@@ -13,42 +13,67 @@
 ---
 
 ## 📖 Mục lục (Table of Contents)
-- [Giới thiệu](#-giới-thiệu)
-- [Tính năng chính](#-tính- năng-chính)
-- [Kiến trúc hệ thống](#-kiến-trúc-hệ-thống)
-- [Hướng dẫn Cài đặt](#-hướng-dẫn-cài-đặt)
-- [Hướng dẫn Sử dụng](#-hướng-dẫn-sử-dụng)
-- [Công nghệ sử dụng](#-công-nghệ-sử-dụng)
-- [Đóng góp](#-đóng-góp)
-- [Giấy phép](#-giấy-phép)
+- [✨ Giới thiệu](#-giới-thiệu)
+- [🚀 Tính năng chính](#-tính-năng-chính)
+- [🤖 Quy trình AI (AI Pipeline)](#-quy-trình-ai-ai-pipeline)
+- [🏗️ Kiến trúc hệ thống](#-kiến-trúc-hệ-thống)
+- [🛠️ Hướng dẫn Cài đặt](#-hướng-dẫn-cài-đặt)
+- [📖 Hướng dẫn Sử dụng](#-hướng-dẫn-sử-dụng)
+- [💻 Công nghệ sử dụng](#-công-nghệ-sử-dụng)
+- [🗺️ Lộ trình phát triển (Roadmap)](#-lộ-trình-phát-triển-roadmap)
+- [🤝 Đóng góp](#-đóng-góp)
+- [📄 Giấy phép](#-giấy-phép)
 
 ---
 
-## 📝 Giới thiệu
-Dự án giải quyết vấn đề phức tạp trong việc xây dựng hệ thống báo cáo đa chiều. Thông thường, việc thiết kế Star Schema và triển khai SSAS Cube mất nhiều ngày làm việc của Data Engineer. Với **OlapAnalytics**, mọi thứ được tự động hóa bởi AI, giúp doanh nghiệp tiếp cận dữ liệu phân tích ngay lập tức.
+## ✨ Giới thiệu
+Dự án giải quyết vấn đề phức tạp trong việc xây dựng hệ thống báo cáo đa chiều. Thông thường, việc thiết kế Star Schema và triển khai SSAS Cube mất nhiều ngày làm việc của Data Engineer. Với **OlapAnalytics**, mọi thứ được tự động hóa bởi AI, giúp doanh nghiệp tiếp cận dữ liệu phân tích ngay lập tức mà không cần kiến thức chuyên sâu về kỹ thuật OLAP.
 
 ---
 
-## ✨ Tính năng chính
-- **🤖 AI-Driven Star Schema**: Tự động phân tích và thiết kế mô hình dữ liệu từ file thô.
-- **🔍 Auto-Discovery**: Tự động nhận diện cấu trúc SQL Server và SSAS.
-- **📊 Interactive Dashboard**: Biểu đồ Glassmorphism với khả năng Drill-down sâu.
-- **⚡ Smart Caching**: Cơ chế cache metadata tách biệt theo từng tenant/kết nối.
-- **🌐 Multi-dimensional Filtering**: Lọc dữ liệu linh hoạt theo nhiều chiều thời gian và thuộc tính.
+## 🚀 Tính năng chính
+- **🤖 AI-Driven Star Schema**: Tự động phân tích và thiết kế mô hình dữ liệu (Fact/Dimensions) từ file thô.
+- **🔍 Auto-Discovery**: Tự động nhận diện và liệt kê SQL Server databases/SSAS catalogs ngay khi gõ tên máy chủ.
+- **📊 Interactive Dashboard**: Biểu đồ Glassmorphism hiện đại với khả năng Drill-down sâu xuống từng cấp độ dữ liệu.
+- **⚡ Smart Caching**: Cơ chế cache metadata và kết quả MDX thông minh, tối ưu hóa cho từng kết nối riêng biệt.
+- **🌐 Multi-dimensional Filtering**: Bộ lọc thời gian nâng cao (Năm, Quý, Tháng, Ngày) tích hợp sẵn.
+
+---
+
+## 🤖 Quy trình AI (AI Pipeline)
+Hệ thống sử dụng mô hình **Gemini 1.5 Pro** để thực hiện các bước:
+1. **Semantic Analysis**: Hiểu ý nghĩa của từng cột dữ liệu (ví dụ: nhận biết "Cost" là Measure, "City" là Dimension).
+2. **Schema Engineering**: Thiết kế cấu trúc Star Schema tối ưu.
+3. **Script Generation**: Tự động viết mã SQL (DDL/DML) và XMLA để xây dựng hệ thống Warehouse/Cube.
+
+![AI Flow](C:\Users\xpaga\.gemini\antigravity\brain\e952bee2-3a7d-44f0-95b0-56eda628c031\olap_analytics_ai_flow_visual_1776954400555.png)
 
 ---
 
 ## 🏗️ Kiến trúc Hệ thống
-Dự án tuân thủ mô hình **Clean Architecture** với 4 lớp chính ở Backend và kiến trúc **Component-based** ở Frontend, đảm bảo tính tách biệt và dễ bảo trì.
+Dự án được xây dựng theo chuẩn **Clean Architecture** để đảm bảo tính module và dễ kiểm thử:
+
+```mermaid
+graph LR
+    User((User)) --> Web[React Frontend]
+    Web --> API[.NET API Layer]
+    API --> App[Application Logic]
+    App --> AI[Gemini API]
+    App --> Infra[Infrastructure Layer]
+    Infra --> SQL[(SQL Server DW)]
+    Infra --> SSAS[(SSAS Cube)]
+```
 
 ---
 
 ## 🛠️ Hướng dẫn Cài đặt (Installation)
 
 ### 1. Yêu cầu hệ thống
-- **Windows 10/11** (Bắt buộc để chạy SSAS).
-- **.NET SDK 8.0** & **Node.js 18+**.
-- **SQL Server 2022** & **SSAS (Multidimensional Mode)**.
+- **Hệ điều hành**: Windows 10/11 (Cần thiết để chạy dịch vụ SSAS).
+- **Môi trường**: 
+  - .NET SDK 8.0+
+  - Node.js 18+ (LTS)
+  - SQL Server 2022 & Analysis Services (Multidimensional Mode).
 
 ### 2. Các bước thiết lập
 1. **Clone project**:
@@ -56,9 +81,9 @@ Dự án tuân thủ mô hình **Clean Architecture** với 4 lớp chính ở B
    git clone https://github.com/username/olapanalytics.git
    cd olapanalytics
    ```
-2. **Cấu hình Database**: Tạo một Database trống trong SQL Server.
-3. **Cấu hình Gemini**: Lấy API Key tại [Google AI Studio](https://aistudio.google.com/).
-4. **Khởi động**: Chạy script tự động (bypass security blocks):
+2. **Bật SQL & SSAS**: Đảm bảo các dịch vụ SQL Server và Analysis Services đã được khởi động.
+3. **Cấu hình Gemini**: Đăng ký và lấy API Key tại [Google AI Studio](https://aistudio.google.com/).
+4. **Khởi động nhanh**: Chạy lệnh duy nhất tại thư mục gốc:
    ```powershell
    node run.js
    ```
@@ -67,37 +92,46 @@ Dự án tuân thủ mô hình **Clean Architecture** với 4 lớp chính ở B
 
 ## 📖 Hướng dẫn Sử dụng (Usage)
 
-### Bước 1: Cấu hình kết nối
-Vào trang **Settings**, điền thông tin máy chủ SQL và SSAS. Hệ thống sẽ tự động tìm kiếm các Database/Catalog khả dụng. Lưu ý dán API Key của Gemini để kích hoạt tính năng AI.
+### Bước 1: Cấu hình kết nối (Settings)
+Truy cập trang **Cài đặt** (Settings), điền thông tin máy chủ. Sử dụng tính năng **Auto-Discovery** để chọn đúng Database và Catalog. Đừng quên lưu Gemini API Key.
 
-### Bước 2: Tải dữ liệu & Phân tích
-Tải lên file dữ liệu (.csv, .xlsx) tại trang **Upload**. Nhấn "Bắt đầu phân tích" để AI thực hiện quy trình: *Phân tích -> Thiết kế DW -> Nạp dữ liệu -> Deploy Cube*.
+### Bước 2: Tải dữ liệu & Phân tích (Upload)
+Kéo thả file `.csv` hoặc `.xlsx` của bạn vào khu vực tải lên. Nhấn **Bắt đầu phân tích**. AI sẽ thực hiện toàn bộ quy trình thiết kế và nạp dữ liệu vào kho lưu trữ.
 
-### Bước 3: Khám phá Dashboard
-Sử dụng các thẻ KPI và biểu đồ để theo dõi xu hướng. Click trực tiếp vào dữ liệu để **Drill-down** chi tiết.
+### Bước 3: Phân tích đa chiều (Dashboard)
+Sử dụng các biểu đồ để xem tổng quan. Nhấn vào bất kỳ phần tử nào trên biểu đồ để thực hiện **Drill-down** (xem chi tiết ở cấp thấp hơn). Sử dụng bộ lọc ở sidebar để thay đổi góc nhìn.
 
 ---
 
 ## 💻 Công nghệ sử dụng (Tech Stack)
-- **Frontend**: React, Vite, TypeScript, Vanilla CSS (Glassmorphism).
-- **Backend**: .NET 8, Dapper, Adomd.NET, SQL Client.
-- **AI**: Google Gemini Pro (Generative AI).
-- **Storage/OLAP**: SQL Server, Analysis Services.
+- **Frontend**: React 18, Vite, TypeScript, Vanilla CSS (Premium Glass UI).
+- **Backend**: .NET 8, Dapper (SQL), Adomd.NET (MDX).
+- **AI Engine**: Google Gemini 1.5 Pro.
+- **Database/OLAP**: SQL Server, Analysis Services.
+
+---
+
+## 🗺️ Lộ trình phát triển (Roadmap)
+- [x] Tích hợp AI Gemini thiết kế Schema tự động.
+- [x] Cơ chế Drill-down đa cấp độ.
+- [x] Auto-discovery cho SQL và SSAS.
+- [ ] Hỗ trợ Export báo cáo ra PDF/Excel.
+- [ ] AI Chatbot truy vấn dữ liệu bằng ngôn ngữ tự nhiên.
+- [ ] Hỗ trợ Docker Deployment.
 
 ---
 
 ## 🤝 Đóng góp (Contributing)
-Chúng tôi luôn hoan nghênh mọi sự đóng góp để dự án hoàn thiện hơn:
+Mọi ý tưởng và đóng góp đều được trân trọng!
 1. Fork dự án.
-2. Tạo nhánh tính năng (`git checkout -b feature/AmazingFeature`).
-3. Commit thay đổi (`git commit -m 'Add some AmazingFeature'`).
-4. Push lên nhánh (`git push origin feature/AmazingFeature`).
-5. Mở một Pull Request.
+2. Tạo nhánh tính năng mới (`git checkout -b feature/NewFeature`).
+3. Commit và Push thay đổi.
+4. Mở Pull Request để chúng tôi xem xét.
 
 ---
 
 ## 📄 Giấy phép (License)
-Phân phối dưới giấy phép **MIT**. Xem `LICENSE` để biết thêm thông tin.
+Phát hành theo giấy phép **MIT**. Xem tệp `LICENSE` để biết thêm chi tiết.
 
 ---
-🚀 **OlapAnalytics** - *Powering your data, elevating your business.*
+🚀 **OlapAnalytics** - *Tầm nhìn dữ liệu, Quyết định tương lai.*
